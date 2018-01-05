@@ -10,7 +10,7 @@ template<typename isConst, typename nonConst>
 struct select<false, isConst, nonConst> {
 	typedef nonConst type;
 };
-
+//Iterator
 template<typename T, bool isConst = false> class Iterator {
 public:
 	typedef typename select<isConst, const T&, T&>::type reference;
@@ -29,7 +29,25 @@ public:
 private:
 	pointer current;
 };
-
+//Reverse Iterator
+template<typename T, bool isConst = false> class ReverseIterator {
+public:
+	typedef typename select<isConst, const T&, T&>::type reference;
+	typedef typename select<isConst, const T*, T*>::type pointer;
+	//Constructor/copy/assignment
+	ReverseIterator<T, isConst>(pointer current) : current(current) {}
+	ReverseIterator<T, isConst>(const ReverseIterator<T, isConst>& other) : current(other.current) {}
+	ReverseIterator<T, isConst>& operator=(const ReverseIterator<T, isConst>& other) { current = other.current; return *this; }
+	//Operator overloading
+	reference operator*() { return *current; }
+	pointer operator->() const { return current };
+	ReverseIterator<T, isConst>& operator++() { --current; return *this; }
+	ReverseIterator<T, isConst>& operator++(int) { ReverseIterator<T, isConst> temp = *this; --current; return temp; }
+	friend bool operator==(const ReverseIterator<T, isConst> &lhs, const ReverseIterator<T, isConst>& rhs) { return lhs.current == rhs.current; }
+	friend bool operator!=(const ReverseIterator<T, isConst> &lhs, const ReverseIterator<T, isConst>& rhs) { return lhs.current != rhs.current; }
+private:
+	pointer current;
+};
 template <typename T> class Vector{
 private:
 	size_t sz;
@@ -40,6 +58,8 @@ private:
 public:
 	typedef Iterator<T> iterator;
 	typedef Iterator<T, true> constIterator;
+	typedef ReverseIterator<T> reverseIterator;
+	typedef ReverseIterator<T, true> reverseConstIterator;
 	/*****Member functions*****/
 	Vector();//default constructor
 	Vector(size_t new_size, const T& val=T());//paremeterized constructor
@@ -54,10 +74,10 @@ public:
 	iterator end();
 	constIterator cbegin();
 	constIterator cend();
-	iterator rbegin();
-	iterator rend();
-	constIterator crbegin();
-	constIterator crend();
+	reverseIterator rbegin();
+	reverseIterator rend();
+	reverseConstIterator crbegin();
+	reverseConstIterator crend();
 
 	/*****Capacity*****/
 	size_t size() const;

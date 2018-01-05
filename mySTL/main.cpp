@@ -154,7 +154,10 @@ void testingIterators() {
 	for (Vector<int>::iterator it = nums.begin(); it != nums.end(); ++it)
 		cout << *it << ", ";
 	cout << "\n";
-	cout << "Last number is " << *(nums.rbegin()) << "\n";
+
+	for (Vector<int>::reverseConstIterator it = nums.crbegin(); it != nums.crend(); ++it)
+		cout << *it << ", ";
+	cout << "\n";
 }
 //argc = argument count | argv =  argument vector
 //argc is the number of string pointed to by argv

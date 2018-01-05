@@ -95,20 +95,20 @@ typename  Vector<T>::constIterator Vector<T>::cend() {
 	return constIterator(inner_array + sz);
 }
 template <typename T>
-typename  Vector<T>::iterator Vector<T>::rbegin() {
-	return iterator(inner_array + sz-1);
+typename  Vector<T>::reverseIterator Vector<T>::rbegin() {
+	return reverseIterator(inner_array + sz-1);
 }
 template <typename T>
-typename  Vector<T>::iterator Vector<T>::rend() {
-
+typename  Vector<T>::reverseIterator Vector<T>::rend() {
+	return reverseIterator(inner_array - 1);
 }
 template <typename T>
-typename  Vector<T>::constIterator Vector<T>::crbegin() {
-
+typename  Vector<T>::reverseConstIterator Vector<T>::crbegin() {
+	return reverseConstIterator(inner_array + sz - 1);
 }
 template <typename T>
-typename  Vector<T>::constIterator Vector<T>::crend() {
-
+typename  Vector<T>::reverseConstIterator Vector<T>::crend() {
+	return reverseConstIterator(inner_array - 1);
 }
 
 /*****Capacity*****/
