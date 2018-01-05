@@ -1,6 +1,34 @@
 #pragma once
+template<bool isConst, typename C, typename N> struct select;
+//Constant iterator type
+template<typename isConst, typename nonConst>
+struct select<true, isConst, nonConst> {
+	typedef isConst type;
+};
+//Non-const iterator type
+template<typename isConst, typename nonConst>
+struct select<false, isConst, nonConst> {
+	typedef nonConst type;
+};
 
-template<typename T, bool isConst = false> class Iterator;
+template<typename T, bool isConst = false> class Iterator {
+public:
+	typedef typename select<isConst, const T&, T&>::type reference;
+	typedef typename select<isConst, const T*, T*>::type pointer;
+	//Constructor/copy/assignment
+	Iterator<T, isConst>(pointer current) : current(current) {}
+	Iterator<T, isConst>(const Iterator<T, isConst>& other) : current(other.current) {}
+	Iterator<T, isConst>& operator=(const Iterator<T, isConst>& other) { current = other.current; return *this; }
+	//Operator overloading
+	reference operator*() { return *current; }
+	pointer operator->() const { return current };
+	Iterator<T, isConst>& operator++() { ++current; return *this; }
+	Iterator<T, isConst>& operator++(int) { Iterator<T, isConst> temp = *this; ++current; return temp; }
+	friend bool operator==(const Iterator<T, isConst> &lhs, const Iterator<T, isConst>& rhs) { return lhs.current == rhs.current; }
+	friend bool operator!=(const Iterator<T, isConst> &lhs, const Iterator<T, isConst>& rhs) { return lhs.current != rhs.current; }
+private:
+	pointer current;
+};
 
 template <typename T> class Vector{
 private:
@@ -14,7 +42,7 @@ public:
 	typedef Iterator<T, true> constIterator;
 	/*****Member functions*****/
 	Vector();//default constructor
-	Vector(size_t new_size, const T& val);//paremeterized constructor
+	Vector(size_t new_size, const T& val=T());//paremeterized constructor
 	~Vector();//destructor
 	Vector<T>(const Vector<T>& other);//copy constructor
 	Vector<T>& operator=(const Vector<T>& other);//assignment operator

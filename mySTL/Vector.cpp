@@ -3,7 +3,7 @@
 #include "Vector.h"
 #include <iostream>
 
-//Private
+/*****Private functions*****/
 template <typename T> 
 void Vector<T>::increaseCapacity(size_t new_capacity) {
 	//Reallocate
@@ -22,9 +22,9 @@ void Vector<T>::cleanup() {
 	cap = 0;
 }
 
-/*****Member functions*****/
+/*****Constructors/Destructor/Assignment*****/
 template <typename T>
-Vector<T>::Vector():sz(0),cap(10),inner_array(new T[cap]){
+Vector<T>::Vector():sz(0),cap(0),inner_array(new T[cap]){
 	std::cout << "default constructor\n";
 }
 template <typename T>
@@ -41,7 +41,7 @@ Vector<T>::~Vector(){
 template <typename T>
 Vector<T>::Vector(const Vector<T>& other):sz(other.sz),cap(other.cap),inner_array(new T[cap]) {
 	std::cout << "copy constructor\n";
-	for (size_t i = 0; i < cap; ++i)
+	for (size_t i = 0; i < sz; ++i)
 		inner_array[i] = other.inner_array[i];
 }
 template <typename T>
@@ -52,7 +52,7 @@ Vector<T>& Vector<T>::operator=(const Vector<T>& other) {
 		sz = other.sz;
 		cap = other.cap;
 		inner_array = new T[cap];
-		for (size_t i = 0; i < cap; ++i)
+		for (size_t i = 0; i < sz; ++i)
 			inner_array[i] = other.inner_array[i];
 	}
 	return *this;
@@ -80,23 +80,23 @@ Vector<T>& Vector<T>::operator=(Vector<T>&& other) {
 /*****Iterators*****/
 template <typename T>
 typename  Vector<T>::iterator Vector<T>::begin() {
-
+	return iterator(inner_array);
 }
 template <typename T>
 typename  Vector<T>::iterator Vector<T>::end() {
-
+	return iterator(inner_array+sz);
 }
 template <typename T>
 typename  Vector<T>::constIterator Vector<T>::cbegin() {
-
+	return constIterator(inner_array);
 }
 template <typename T>
 typename  Vector<T>::constIterator Vector<T>::cend() {
-
+	return constIterator(inner_array + sz);
 }
 template <typename T>
 typename  Vector<T>::iterator Vector<T>::rbegin() {
-
+	return iterator(inner_array + sz-1);
 }
 template <typename T>
 typename  Vector<T>::iterator Vector<T>::rend() {
@@ -249,8 +249,11 @@ void Vector<T>::assign(size_t n, const T& val) {
 }
 template <typename T>
 void Vector<T>::pushBack(const T& data) {
-	if (sz >= cap)
+	if(cap==0)
+		increaseCapacity(++cap);
+	if (sz >= cap) 
 		increaseCapacity(cap * 2);
+
 	inner_array[sz] = data;
 	++sz;
 }

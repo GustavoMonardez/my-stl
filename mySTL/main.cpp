@@ -60,6 +60,7 @@ void testing() {
 	cout << nodes.at(1).next << "\n";
 }
 void testing2() {
+	/*
 	Vector<string>nums1;
 	nums1.pushBack("3");
 	nums1.pushBack("15");
@@ -74,8 +75,12 @@ void testing2() {
 	for (size_t i = 0; i < nums1.size(); ++i)
 		cout << nums1[i] << ", ";
 	cout << "\n";
-	//cout << "size=" << nums1.size() << "\n";
-	//cout << "capacity=" << nums1.capacity() << "\n";
+	Vector<int>temp(15,100);
+	for (size_t i = 0; i < temp.size(); ++i)
+		cout << temp[i] << ", ";
+	cout << "\n";
+	cout << "size=" << temp.size() << "\n";
+	cout << "capacity=" << temp.capacity() << "\n";*/
 	/*	
 	Vector<int>nums2;
 	nums2.pushBack(10);
@@ -138,6 +143,19 @@ void testing2() {
 	cout << "capacity=" << nums2.capacity() << "\n\n";*/
 	
 }
+void testingIterators() {
+	Vector<int>nums;
+	nums.pushBack(10);
+	nums.pushBack(3);
+	nums.pushBack(8);
+	nums.pushBack(1);
+	nums.pushBack(16);
+
+	for (Vector<int>::iterator it = nums.begin(); it != nums.end(); ++it)
+		cout << *it << ", ";
+	cout << "\n";
+	cout << "Last number is " << *(nums.rbegin()) << "\n";
+}
 //argc = argument count | argv =  argument vector
 //argc is the number of string pointed to by argv
 int main(int argc, char **argv) {
@@ -149,7 +167,7 @@ int main(int argc, char **argv) {
 	//Vector<int>nums2(Vector<int>(2, 5));
 	//nums2 = Vector<int>(2, 5);
 	//cout << nums.size() << "\n";
-	testing2();
+	testingIterators();
 
 	return 0;
 }
