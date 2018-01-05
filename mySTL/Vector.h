@@ -6,13 +6,15 @@ template <typename T> class Vector{
 private:
 	size_t sz;
 	size_t cap;
-	T valueType();
+	T *inner_array;
+	void increaseCapacity(size_t new_capacity);
 	void cleanup();
 public:
 	typedef Iterator<T> iterator;
 	typedef Iterator<T, true> constIterator;
 	/*****Member functions*****/
-	Vector();//constructor
+	Vector();//default constructor
+	Vector(size_t new_size, const T& val);//paremeterized constructor
 	~Vector();//destructor
 	Vector<T>(const Vector<T>& other);//copy constructor
 	Vector<T>& operator=(const Vector<T>& other);//assignment operator
@@ -31,7 +33,7 @@ public:
 
 	/*****Capacity*****/
 	size_t size() const;
-	void resize(size_t new_size, T val = valueType());
+	void resize(size_t new_size, T val = T());
 	size_t capacity() const;
 	bool empty() const;
 	void reserve(size_t new_capcity);
@@ -42,13 +44,13 @@ public:
 	const T& operator[](size_t index) const;
 	T& at(size_t index);
 	const T& at(size_t index) const;
-	T& front(size_t index);
-	const T& front(size_t index) const;
-	T& back(size_t index);
-	const T& back(size_t index) const;
+	T& front();
+	const T& front() const;
+	T& back();
+	const T& back() const;
 
 	/*****Modifiers*****/
-	void assign(Iterator first, Iterator last);
+	void assign(iterator first, iterator last);
 	void assign(size_t n, const T& val);
 	void pushBack(const T& data);
 	void popBack();
@@ -60,4 +62,4 @@ public:
 	void swap(Vector& other);
 	void clear();
 };
-
+#include "Vector.cpp"
