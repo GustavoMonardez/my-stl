@@ -24,8 +24,14 @@ public:
 	pointer operator->() const { return current };
 	Iterator<T, isConst>& operator++() { ++current; return *this; }
 	Iterator<T, isConst>& operator++(int) { Iterator<T, isConst> temp = *this; ++current; return temp; }
+	Iterator<T, isConst>& operator--() { --current; return *this; }
+	Iterator<T, isConst>& operator--(int) { Iterator<T, isConst> temp = *this; --current; return temp; }
+	Iterator<T, isConst>& operator+(int value) {for(size_t i=0; i < value;++i)++current; return *this; }
+	Iterator<T, isConst>& operator-(int value) { for (size_t i = 0; i < value; ++i)--current; return *this; }
 	friend bool operator==(const Iterator<T, isConst> &lhs, const Iterator<T, isConst>& rhs) { return lhs.current == rhs.current; }
 	friend bool operator!=(const Iterator<T, isConst> &lhs, const Iterator<T, isConst>& rhs) { return lhs.current != rhs.current; }
+	friend bool operator>(const Iterator<T, isConst> &lhs, const Iterator<T, isConst>& rhs) { return lhs.current > rhs.current; }
+	friend bool operator<(const Iterator<T, isConst> &lhs, const Iterator<T, isConst>& rhs) { return lhs.current < rhs.current; }
 private:
 	pointer current;
 };

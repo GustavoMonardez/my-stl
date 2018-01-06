@@ -11,7 +11,8 @@ struct Node {
 	int data;
 	Node *next;
 };
-void print1DVector(const vector<int> &nums) {
+template <typename T>
+void print1DVector(T &nums) {
 	cout << "Start Printing 1D Vector\n";
 	for (auto num : nums)
 		cout << num << ", ";
@@ -158,6 +159,55 @@ void testingIterators() {
 	for (Vector<int>::reverseConstIterator it = nums.crbegin(); it != nums.crend(); ++it)
 		cout << *it << ", ";
 	cout << "\n";
+
+	cout <<"nums.front()=" << nums.front() << "\n";
+	cout << "nums.back()=" << nums.back() << "\n";
+	cout << "nums.at(2)=" << nums.at(2) << "\n";
+	cout << "nums[2]=" << nums[2] << "\n";
+	cout << "nums.empty()=" << nums.empty() << "\n";
+	cout << "nums.capacity()=" << nums.capacity() << "\n";
+	cout << "nums.size()=" << nums.size() << "\n";
+	cout << "nums.assign(3,100)=\n";
+	nums.assign(3, 100);
+	cout << "Start Printing 1D Vector\n";
+	for (auto num : nums)
+		cout << num << ", ";
+	cout << "\n";
+	cout << "End Printing 1D Vector\n";
+	cout << "nums.capacity()=" << nums.capacity() << "\n";
+	cout << "nums.size()=" << nums.size() << "\n";
+}
+Vector<int> dummy() {
+	Vector<int>temp;
+	temp.pushBack(2);
+	return temp;
+}
+void testingMoveSemantics() {
+	//Vector<int>nums1 = dummy();
+	//nums1 = dummy();
+	Vector<int>nums1;
+	Vector<int>nums2;
+	nums1 = nums2;
+}
+void testingIterators2() {
+	Vector<int>nums1;
+	nums1.pushBack(52);
+	nums1.pushBack(7);
+	nums1.pushBack(32);
+	nums1.pushBack(17);
+	nums1.pushBack(84);
+	print1DVector(nums1);
+
+	Vector<int>nums2;
+	auto start = nums1.begin()+2;
+	auto end = nums1.end()-1;
+	try {
+		nums2.assign(start, end);
+	}
+	catch (std::out_of_range e) {
+		cout << e.what() << "\n";
+	}
+	print1DVector(nums2);
 }
 //argc = argument count | argv =  argument vector
 //argc is the number of string pointed to by argv
@@ -170,7 +220,7 @@ int main(int argc, char **argv) {
 	//Vector<int>nums2(Vector<int>(2, 5));
 	//nums2 = Vector<int>(2, 5);
 	//cout << nums.size() << "\n";
-	testingIterators();
+	testingIterators2();
 
 	return 0;
 }

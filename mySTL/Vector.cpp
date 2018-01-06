@@ -25,28 +25,28 @@ void Vector<T>::cleanup() {
 /*****Constructors/Destructor/Assignment*****/
 template <typename T>
 Vector<T>::Vector():sz(0),cap(0),inner_array(new T[cap]){
-	std::cout << "default constructor\n";
+	//std::cout << "default constructor\n";
 }
 template <typename T>
 Vector<T>::Vector(size_t new_size, const T& val) : sz(new_size),cap(new_size), inner_array(new T[cap]) {
-	std::cout << "paremeterized constructor\n";
+	//std::cout << "paremeterized constructor\n";
 	for (size_t i = 0; i < cap; ++i)
 		inner_array[i] = val;
 }
 template <typename T>
 Vector<T>::~Vector(){
-	std::cout << "destructor\n";
+	//std::cout << "destructor\n";
 	cleanup();
 }
 template <typename T>
 Vector<T>::Vector(const Vector<T>& other):sz(other.sz),cap(other.cap),inner_array(new T[cap]) {
-	std::cout << "copy constructor\n";
+	//std::cout << "copy constructor\n";
 	for (size_t i = 0; i < sz; ++i)
 		inner_array[i] = other.inner_array[i];
 }
 template <typename T>
 Vector<T>& Vector<T>::operator=(const Vector<T>& other) {
-	std::cout << "assignment operator\n";
+	//std::cout << "assignment operator\n";
 	if (this != &other) {
 		cleanup();
 		sz = other.sz;
@@ -59,20 +59,22 @@ Vector<T>& Vector<T>::operator=(const Vector<T>& other) {
 }
 template <typename T>
 Vector<T>::Vector(Vector<T>&& other):sz(0),cap(0),inner_array(other.inner_array) {
-	std::cout << "move constructor\n";
-	other.cleanup();
+	//std::cout << "move constructor\n";
+	other.sz = 0;
+	other.cap = 0;
+	other.inner_array = nullptr;
 }
 template <typename T>
 Vector<T>& Vector<T>::operator=(Vector<T>&& other) {
-	std::cout << "move assignment operator\n";
+	//std::cout << "move assignment operator\n";
 	if (this != &other) {
-		//cleanup();
+		cleanup();
 		sz = other.sz;
 		cap = other.cap;
-		inner_array = new T[cap];
-		//inner_array = other.inner_array;
-		//other.inner_array = nullptr;
-		//other.cleanup();
+		inner_array = other.inner_array;
+		other.sz = 0;
+		other.cap = 0;
+		other.inner_array = nullptr;
 	}
 	return *this;
 }
@@ -234,7 +236,29 @@ const T& Vector<T>::back() const {
 /*****Modifiers*****/
 template <typename T>
 void Vector<T>::assign(typename iterator first,typename iterator last) {
-	//TODO after iterator class
+	if (first > last)
+		throw std::out_of_range("out of range exception:assign()");
+	//Find range size
+	typename iterator current = first;
+	size_t range_size = 0;
+	while (current != last) {
+		++range_size;
+		++current;
+	}
+	//Clean up array and reset sz
+	delete[] inner_array;
+	sz = 0;
+	//Increase capacity if needed
+	if (range_size > cap)
+		cap = range_size;
+	//Reallocate
+	inner_array = new T[cap];
+	//Fill with range values
+	while (first != last) {
+		inner_array[sz] = *first;
+		++sz;
+		++first;
+	}
 }
 template <typename T>
 void Vector<T>::assign(size_t n, const T& val) {
@@ -265,23 +289,23 @@ void Vector<T>::popBack() {
 }
 template <typename T>
 void Vector<T>::insert(typename iterator before_pos, const T& val) {
-	//TODO after Iterator class
+	//TODO insert Iterator single element
 }
 template <typename T>
 void Vector<T>::insert(typename iterator before_pos, size_t n, const T& val) {
-	//TODO after Iterator class
+	//TODO insert Iterator multiple elements
 }
 template <typename T>
 void Vector<T>::insert(typename iterator before_pos, typename iterator start, typename iterator end) {
-	//TODO after Iterator class
+	//TODO insert Iterator from another vector
 }
 template <typename T>
 typename Vector<T>::iterator Vector<T>::erase(typename iterator pos) {
-	//TODO after Iterator class
+	//TODO erase Iterator single
 }
 template <typename T>
 typename Vector<T>::iterator Vector<T>::erase(typename iterator start, typename iterator end) {
-	//TODO after Iterator class
+	//TODO erase Iterator range
 }
 template <typename T>
 void Vector<T>::swap(Vector& other) {
